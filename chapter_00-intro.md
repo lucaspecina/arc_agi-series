@@ -1,8 +1,14 @@
 # Chapter 0: Introduction to ARC and Intelligence
 
+**Lucas Pecina**
+
+*AI Researcher and Head of AI at Y-TEC*
+
+*Nov 2024*
+
 ## Introduction to the Series
 
-Hello everyone, my name is **Lucas Pecina**, an AI researcher and the AI leader at the YTEC research group. I'm excited to launch a new series of YouTube videos where I'll document my journey in solving the **Abstraction and Reasoning Corpus for Artificial General Intelligence (ARC-AGI)**. In this series, I'll share my progress, research, and insights as I delve into ARC, analyze existing solutions and approaches, and conduct my own investigations. All my code and research will be open source. We'll also explore relevant papers and new proposals in the field.
+My name is Lucas Pecina, and I lead AI research at Y-TEC. This series of videos will document my research on solving the **ARC-AGI** challenge. I'll share my progress, research, and insights as I delve into ARC, analyze existing solutions and approaches, and conduct my own investigations. All my code and research will be open source. I'll also explore relevant papers and new proposals in the field.
 
 ---
 
