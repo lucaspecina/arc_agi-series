@@ -8,11 +8,16 @@
 
 ## Introduction to the Series
 
-My name is Lucas Pecina, and I lead AI research at Y-TEC. This series of videos will document my research on solving the **ARC-AGI** challenge. I'll share my progress, research, and insights as I delve into ARC, analyze existing solutions and approaches, and conduct my own investigations. All my code and research will be open source. I'll also explore relevant papers and new proposals in the field.
+My name is Lucas Pecina, and I the head of AI research at Y-TEC. This series of videos will document my research on solving the **ARC-AGI** challenge. I'll share my progress, research, and insights as I delve into ARC, analyze existing solutions and approaches, and conduct my own investigations. All my code and research will be open source. I'll also explore relevant papers and new proposals in the field.
+
+This first video I'll provide an overview of the ARC-AGI challenge, discuss the history of AI, and introduce François Chollet's definition of intelligence. I'll also cover the characteristics for evaluating intelligence, the ARC benchmark, and the limitations of large language models (LLMs).
 
 ---
+I will adopt François Chollet's definition and approach to intelligence, based on his famous paper "On the Measure of Intelligence" and other articles and interviews. The goal of this series is to explore and test different approaches to solving the ARC-AGI challenge, which is a benchmark for measuring intelligence created by Chollet himself, and to share my findings and progress with the community.
 
-## History of AI: Task-Specific Approaches vs. Generalization
+This document serves as a guide for the first video in the series. It is not intended to be a scientific article, but rather a summary of the topics that will be covered in the video.
+
+## History and Evolution of Intelligence: Task-Specific Approaches vs. Generalization
 
 > "To make deliberate progress towards more intelligent and more human-like artificial systems, we need to be following an appropriate feedback signal: we need to be able to define and evaluate intelligence in a way that enables comparisons between two systems, as well as comparisons with humans."  
 > —From the abstract of *"On the Measure of Intelligence"* by François Chollet
@@ -31,11 +36,9 @@ This perspective posits that intelligence lies in the **general capacity to acqu
 
 This view echoes Locke's concept of **"Tabula Rasa"**, seeing the mind as a flexible, adaptable, and highly general process that transforms experience into behavior, knowledge, and skills.
 
-**McCarthy's View:** Prioritizes generality—the ability of machines to handle problems for which they have not been prepared.
-
 ---
 
-François Chollet **criticizes both perspectives** for being too simplistic. He argues that Minsky's view reduces intelligence to skill in specific tasks, ignoring the capacity for generalization. On the other hand, McCarthy's view, while recognizing the importance of generalization, does not provide a precise definition or a way to measure it.
+François Chollet **criticizes both perspectives** for being too simplistic. He argues that Minsky's view reduces intelligence to skill in specific tasks, ignoring the capacity for generalization. On the other hand, the Tabula Rasa view, while recognizing the importance of generalization, does not provide a precise definition or a way to measure it.
 
 In summary, the human mind is a complex system that **combines both innate biases and the ability to learn from experience**. These biases are not a limitation to our generalization capabilities but rather their source—the reason why humans can acquire certain categories of skills with remarkable efficiency.
 
@@ -43,7 +46,9 @@ In summary, the human mind is a complex system that **combines both innate biase
 
 ## Characteristics for Evaluating Intelligence
 
-To progress toward more flexible and general AI, we need to go beyond skill-based evaluation and adopt methods that capture systems' ability to handle novel and uncertain situations. The greatest successes in AI have been in building special-purpose systems capable of handling well-defined tasks, sometimes with superhuman performance. This success has been driven by performance measures that quantify a system's **skill** in a given task (e.g., how well an AI plays chess or recognizes images).
+To progress toward more flexible and general AI, we need to go beyond skill-based evaluation and adopt methods that capture systems' ability to handle novel and uncertain situations. The greatest successes in AI have been in building special-purpose systems capable of handling well-defined tasks, sometimes with superhuman performance. This success has been measured by performance metrics that quantify a system's **skill** in a given task (e.g., how well an AI plays chess or recognizes images).
+
+However, this is a problem, as skill in a specific task is not necessarily indicative of intelligence. The capacity for **generalization** is fundamental for evaluating a system's intelligence, and current benchmarks do not adequately measure it.
 
 ### Generalization
 
@@ -51,13 +56,12 @@ To progress toward more flexible and general AI, we need to go beyond skill-base
 
 - **No Generalization:** Systems without uncertainty, such as deterministic programs or algorithms with correctness proofs.
   
-- **Local Generalization (Robustness):** Ability to handle new inputs from a known distribution for a single task, like an image classifier recognizing new images after training.
+- **Local Generalization (Robustness):** Ability to handle new oiunts from a known distribution for a single task, like an image classifier recognizing new images after training. This is the classical Machine Learning paradigm. "Adaoptation to known unknowns".
   
-- **Broad Generalization (Flexibility):** Ability to handle a wide range of tasks and environments without human intervention, like a fully autonomous vehicle or a household robot passing Wozniak's coffee cup test.
+- **Broad Generalization (Flexibility):** Ability to handle a wide range of tasks and environments without human intervention, like a fully autonomous vehicle. The system could handle situations that couldn't be foreseen by the creators of the system. "Adaptation to unknown unknowns across a broad category of related tasks".
   
-- **Extreme Generalization:** Ability to handle entirely new tasks that share only abstract similarities with previously encountered situations, like human intelligence.
+- **Extreme Generalization:** Ability to handle entirely new tasks that share only abstract similarities with previously encountered situations, like human intelligence. ·Adaptation to unknown unknowns across an unknown range of tasks and domains".
 
-The term "**generality**" refers to human-centered extreme generalization—the capacity to generalize across the tasks and domains relevant to human experience.
 
 This spectrum reflects the hierarchical organization of human cognitive abilities, as described by theories of intelligence structure in cognitive psychology (e.g., CHC, g-VPR).
 
@@ -65,9 +69,13 @@ This spectrum reflects the hierarchical organization of human cognitive abilitie
 
 **Skill in a specific task is not necessarily indicative of intelligence.**
 
+Information processing systems form a spectrum between two extremes: 
+- **static systems**: that consist entirely of hard-coded priors. 
+- **general systems**: that can learn new skills with minimal priors and are almost entirely programmed via exposure to data.
+
 The capacity for **generalization** runs orthogonal to prior knowledge and experience. A system can achieve high performance in a task due to extensive knowledge or training **without necessarily being able to generalize to new situations**.
 
-Contemporary **deep neural networks**, despite their success, remain systems of local generalization, similar to a locality-sensitive hash table.
+I think current AIs are between local and broad generalization at the moment. They can adapt to new situations within their training distribution, but they struggle with tasks that are too different from their training data. The goal is to push AI toward extreme generalization, where they can learn new tasks with minimal data and experience.
 
 To evaluate intelligence meaningfully, it's crucial to **control for prior knowledge, experience, and generalization difficulty**, rather than focusing solely on task-specific skill.
 
@@ -85,14 +93,13 @@ Human intelligence, although broad compared to other animals, **is not universal
 
 ## Chollet's Definition of Intelligence
 
-> "We then articulate a new formal definition of intelligence based on Algorithmic Information Theory, describing intelligence as skill-acquisition efficiency and highlighting the concepts of scope, generalization difficulty, priors, and experience, as critical pieces to be accounted for in characterizing intelligent systems."  
-> —From the abstract of *"On the Measure of Intelligence"*
-
 Chollet defines intelligence as the **efficiency in acquiring new skills over a range of tasks, considering prior knowledge, experience, and generalization difficulty**.
 
 In other words, it's a system's ability to learn new skills with minimal information and experience.
 
 He emphasizes that **intelligence is a process, not a product**. It's about learning and adapting, not just executing preprogrammed skills. **Skill** is the product of intelligence—the result of learning.
+
+FUNDAMENTAL IDEA OF INTELLIGENCE: Intelligence is a cognitive mechanism (a tool) that an agent uses to adapt to novelty in situations not previously encountered. It does this by creating models on the fly of the new situation, combining existing building blocks learned through experience.
 
 Three key concepts to define and measure intelligence:
 
@@ -102,7 +109,46 @@ Three key concepts to define and measure intelligence:
   
 - **Information Efficiency:** Measures how much data a system needs to acquire a new skill or program. A more intelligent system uses information more efficiently.
 
-Chollet introduces the concept of a **Curriculum**—a sequence of interactions during training. A good curriculum can significantly improve a system's skill-acquisition efficiency.
+Chollet says that the mind or a general intelligence has two main components: **Program Synthesis** and **Abstraction Generation**.
+
+- **Program Synthesis:** You take the building blocks and assemble them to form a program model that matches the current task.
+- **Abstraction Generation:** The inverse process. You look at the information you have available and the model you have already created to respond to it, and convert that into reusable abstractions that you can store in your memory to retrieve at other times.
+
+Intelligence is a TOOL for agents to accomplish goals. It is separate from other modules of an agent's system, such as the sensor motor (and sensorimotor space/action space), the ability to set goals, or even the world model. These are different things, with different functions within an agent.
+
+One can set a goal and have an idea of the world, and intelligence is the pathfinding algorithm that uses that world model (representing what the goal means and perhaps even simulating planning) to reach that objective. Intelligence could be seen as a  way to take in information and turn it into an actionable model.
+
+I will discuss these components further in the next video, along with other analyses of how the mind works and how we can apply these concepts to artificial intelligence. For example, the division between System 1 and System 2, how humans learn from a constructivist perspective, and intelligence as a meta-skill. This video is just a general introduction to the problem and the proposed benchmark for measuring intelligence.
+
+---
+
+## Limitations of Large Language Models (LLMs) and current AI
+
+Chollet observes that current LLMs, despite impressive capabilities, have **significant limitations**:
+
+Their limitations include:
+
+- **Dependence on Familiarity:** Excel in tasks similar to training data but fail in novel tasks or those requiring deep reasoning. They rely on memorization and superficial pattern recognition, not true understanding.
+  
+- **Fragility to Changes:** Small modifications in task formulation or variables can drastically affect performance, showing a lack of robustness and deep understanding.
+
+LLMs are essentially **databases of "skill programs"**, each representing a specific ability like translation or creative writing.
+
+When querying an LLM, you are querying a point in program space. An LLM is a manifold where each point represents a program. They are trained to predict the next token. If you had infinite memory capacity, it would essentially be a large lookup table. However, due to limited capacity, it must compress the information. Thus, it learns predictive vector functions. 
+
+For example, if you provide it with Shakespearean text it has never seen before, but it has been trained on English texts, it has learned programs that model English. Therefore, it can reuse functions (programs) it has already learned. The LLM learns millions of functions and can combine them. (In this context, a "program" is an input→output mapping that is continuous (they are functions). They are compositional because they are vector functions. You can add them, you can interpolate between them because they are continuous functions).
+
+During training, LLMs learn to **map input tokens to output tokens**, building vector functions encoding these mappings. Due to memory limits, they **compress the space of memorized programs**, expressing new ones using fragments of known programs. This allows **limited generalization** to slightly different inputs.
+
+However, this generalization is limited:
+
+- **Caesar Ciphers:** LLMs can decrypt common key sizes but fail with unusual ones, indicating memorization of specific cases rather than understanding the cipher.
+  
+- **Logic Problems:** Solve familiar problems but fail when variables change, suggesting reliance on memorized patterns over logical reasoning.
+
+These examples show that **LLMs' performance heavily depends on task familiarity**. They can handle complex tasks only if they've memorized solutions.
+
+This limitation applies to all deep learning models—an inherent consequence of fitting models to training data.
 
 ---
 
@@ -175,45 +221,21 @@ Reflects intuitive understanding of space and shapes. ARC includes concepts like
 
 ---
 
-## Limitations of Large Language Models (LLMs)
-
-Chollet observes that current LLMs, despite impressive capabilities, have **significant limitations**:
-
-- **Dependence on Familiarity:** Excel in tasks similar to training data but fail in novel tasks or those requiring deep reasoning. They rely on memorization and superficial pattern recognition, not true understanding.
-  
-- **Fragility to Changes:** Small modifications in task formulation or variables can drastically affect performance, showing a lack of robustness and deep understanding.
-
-LLMs are essentially **databases of "skill programs"**, each representing a specific ability like translation or creative writing.
-
-During training, LLMs learn to **map input tokens to output tokens**, building vector functions encoding these mappings. Due to memory limits, they **compress the space of memorized programs**, expressing new ones using fragments of known programs. This allows **limited generalization** to slightly different inputs.
-
-However, this generalization is limited:
-
-- **Caesar Ciphers:** LLMs can decrypt common key sizes but fail with unusual ones, indicating memorization of specific cases rather than understanding the cipher.
-  
-- **Logic Problems:** Solve familiar problems but fail when variables change, suggesting reliance on memorized patterns over logical reasoning.
-
-These examples show that **LLMs' performance heavily depends on task familiarity**. They can handle complex tasks only if they've memorized solutions.
-
-This limitation applies to all deep learning models—an inherent consequence of fitting models to training data.
-
----
-
 ## Abstraction as the Engine of Generalization
 
 Chollet argues that **abstraction** is fundamental for generalization. It involves identifying patterns and relationships and encoding them into abstract representations reusable in new situations.
 
 He distinguishes **two types of abstraction**:
 
-- **Abstraction over Values:** Compares continuous values. This is what deep learning models do—effective for perception tasks but limited in abstract reasoning.
+- **Value-centric Abstraction (deep learning):** Compares continuous values. This is what deep learning models do—effective for **perception** tasks but limited in abstract reasoning.
   
-- **Abstraction over Programs:** Compares discrete programs (graphs) by finding exact structural matches (subgraph isomorphisms). This is analogous to human reasoning and software engineering practices. It relies on structural similarity.
+- **Program-centric Abstraction (program synthesis):** Compares discrete programs (graphs) by finding exact structural matches (subgraph isomorphisms). This is analogous to human reasoning and software engineering practices. It relies on structural similarity.
+
+**Deep learning-based AI (transformers, LLMs)**: the architecture behind many LLMs, excel in value-centric abstraction but are inadequate for program-centric abstraction, limiting their ability to generalize to new situations and perform complex reasoning. They find "similar" things. They are not exact; they are approximate. They can give you a good DIRECTION on where to search or go.
 
 He suggests that **intelligence arises from combining these two forms of abstraction**. The human brain exemplifies this, with the left hemisphere associated with reasoning (program-centric abstraction) and the right with perception (value-centric abstraction).
 
-LLMs focus on **abstraction over values**, explaining their limitations in generalization and abstract reasoning.
-
-**Transformers**, the architecture behind many LLMs, excel in value-centric abstraction but are inadequate for program-centric abstraction, limiting their ability to generalize to new situations and perform complex reasoning.
+When refactoring code, we don't want the functions to "feel" similar but to be exactly the same with the exact same behavior. You need to see it explicitly step by step and verify it. Comparing perfectly step by step is more costly. Therefore, a good idea is not to search randomly but to use your intuition to search more efficiently for options to verify.
 
 ---
 
@@ -321,7 +343,7 @@ In ARC, these ideas can **"map out" the state or program space**, turning progra
 
 - **Examine Models with Better Performance:**
 
-  - Analyze solutions like Jack Cole's 34% success rate compared to others.
+  - I will analyze the solutions that have shown the best performance for the ARC challenge, and compare them to other approaches.
 
 - **Conceptual Ideas: System 1 and System 2:**
 
